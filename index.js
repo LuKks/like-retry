@@ -36,7 +36,7 @@ function sleep (ms) {
 }
 
 function indexOrLast (array, index) {
-  if (index <= array.length - 1) {
+  if (index < array.length) {
     return array[index]
   }
   return array[array.length - 1]
