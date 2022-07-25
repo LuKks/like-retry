@@ -1,39 +1,19 @@
 const tape = require('tape')
 const retry = require('./')
 
-tape('default', async function (t) {
-  let [c, r, MAX] = [0, 0, 3]
+tape('default (zero retries)', async function (t) {
+  let [c, r, MAX, started] = [0, 0, 0, Date.now()]
 
   try {
     for await (const backoff of retry()) {
       c++
-      const started = Date.now()
       await backoff(new Error('ok'))
-      t.ok(isAround(Date.now() - started, 0))
       r++
     }
   } catch (error) {
     t.is(error.message, 'ok')
   }
-
-  t.is(c, MAX + 1)
-  t.is(r, MAX)
-})
-
-tape('none', async function (t) {
-  let [c, r, MAX] = [0, 0, 3]
-
-  try {
-    for await (const backoff of retry({ strategy: 'none' })) {
-      c++
-      const started = Date.now()
-      await backoff(new Error('ok'))
-      t.ok(isAround(Date.now() - started, 0))
-      r++
-    }
-  } catch (error) {
-    t.is(error.message, 'ok')
-  }
+  t.ok(isAround(Date.now() - started, 0))
 
   t.is(c, MAX + 1)
   t.is(r, MAX)
@@ -137,7 +117,26 @@ tape('jitter', async function (t) {
   t.is(r, MAX)
 })
 
-tape('linear', async function (t) {
+tape('strategy none', async function (t) {
+  let [c, r, MAX, DELAY] = [0, 0, 3, 100]
+
+  try {
+    for await (const backoff of retry({ max: MAX, delay: DELAY, strategy: 'none' })) {
+      c++
+      const started = Date.now()
+      await backoff(new Error('ok'))
+      t.ok(isAround(Date.now() - started, DELAY))
+      r++
+    }
+  } catch (error) {
+    t.is(error.message, 'ok')
+  }
+
+  t.is(c, MAX + 1)
+  t.is(r, MAX)
+})
+
+tape('strategy linear', async function (t) {
   let [c, r, MAX, DELAY] = [0, 0, 5, 50]
 
   try {
@@ -156,7 +155,7 @@ tape('linear', async function (t) {
   t.is(r, MAX)
 })
 
-tape('exponential', async function (t) {
+tape('strategy exponential', async function (t) {
   let [c, r, MAX, DELAY] = [0, 0, 5, 5]
 
   try {
@@ -175,7 +174,7 @@ tape('exponential', async function (t) {
   t.is(r, MAX)
 })
 
-tape('array', async function (t) {
+tape('strategy array', async function (t) {
   let [c, r, MAX, DELAYS] = [0, 0, 5, [25, 100, 250]]
 
   try {
@@ -197,7 +196,7 @@ tape('array', async function (t) {
   t.is(r, MAX)
 })
 
-tape('custom', async function (t) {
+tape('strategy custom', async function (t) {
   let [c, r, MAX, DELAY] = [0, 0, 5, 2]
 
   const strategy = ({ delay, count, jitter }) => delay ** count

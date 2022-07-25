@@ -67,5 +67,14 @@ for await (const backoff of retry({ max: 3, delay: 3000, strategy: 'none' })) {
 }
 ```
 
+## Default
+Without options there will be no retries, delay or anything.
+
+```javascript
+for await (const backoff of retry()) {
+  await backoff(new Error()) // will just throw
+}
+```
+
 ## License
 MIT

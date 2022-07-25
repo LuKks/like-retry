@@ -1,7 +1,7 @@
 module.exports = retry
 
 async function * retry (opts = {}) {
-  const max = opts.max === undefined ? 3 : opts.max
+  const max = opts.max === undefined ? 0 : opts.max
   const delay = opts.delay === undefined ? 0 : opts.delay
   const strategy = opts.strategy
   const jitter = opts.jitter === undefined ? 0 : opts.jitter
