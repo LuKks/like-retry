@@ -2,6 +2,8 @@
 
 Retry and backoff using generators.
 
+![](https://img.shields.io/npm/v/like-retry.svg) ![](https://img.shields.io/npm/dt/like-retry.svg) ![](https://img.shields.io/badge/tested_with-tape-e683ff.svg) ![](https://img.shields.io/github/license/LuKks/like-retry.svg)
+
 ```
 npm i like-retry
 ```
