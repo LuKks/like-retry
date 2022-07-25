@@ -14,7 +14,8 @@ const retry = require('like-retry')
 
 for await (const backoff of retry({ max: 3, delay: 3000 })) {
   try {
-    return await axios.get(...)
+    const response = await axios.get(...)
+    console.log(response.data)
   } catch (error) {
     await backoff(error) // 3s, 3s, 3s and finally throws
   }
