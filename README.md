@@ -32,7 +32,7 @@ for await (const backoff of retry({ max: 5, delay: 1000, jitter: 500 })) {
 ## Linear
 ```javascript
 for await (const backoff of retry({ max: 5, delay: 3000, strategy: 'linear' })) {
-  await backoff(new Error()) // 3s, 6s, 9s, 12s, 15s, 18s and finally throws
+  await backoff(new Error()) // 3s, 6s, 9s, 12s, 15s and finally throws
 }
 ```
 
