@@ -7,7 +7,7 @@ async function * retry (opts = {}) {
   const jitter = opts.jitter === undefined ? 0 : opts.jitter
 
   for (let count = 1; count <= max + 1; count++) {
-    yield function backoff (error) {
+    function backoff (error) {
       if (count > max) {
         throw error
       }
@@ -26,6 +26,10 @@ async function * retry (opts = {}) {
 
       return sleep(time)
     }
+
+    backoff.left = (max + 1) - count
+
+    yield backoff
   }
 }
 

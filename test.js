@@ -6,6 +6,7 @@ tape('default (zero retries)', async function (t) {
 
   try {
     for await (const backoff of retry()) {
+      t.is(backoff.left, MAX - c)
       c++
       await backoff(new Error('ok'))
       r++
@@ -24,6 +25,7 @@ tape('zero retries', async function (t) {
 
   try {
     for await (const backoff of retry({ max: MAX })) {
+      t.is(backoff.left, MAX - c)
       c++
       await backoff(new Error('ok'))
       r++
@@ -42,6 +44,7 @@ tape('one retry', async function (t) {
 
   try {
     for await (const backoff of retry({ max: MAX })) {
+      t.is(backoff.left, MAX - c)
       c++
       const started = Date.now()
       await backoff(new Error('ok'))
@@ -61,6 +64,7 @@ tape('two retries', async function (t) {
 
   try {
     for await (const backoff of retry({ max: MAX })) {
+      t.is(backoff.left, MAX - c)
       c++
       const started = Date.now()
       await backoff(new Error('ok'))
@@ -80,6 +84,7 @@ tape('delay', async function (t) {
 
   try {
     for await (const backoff of retry({ max: MAX, delay: DELAY })) {
+      t.is(backoff.left, MAX - c)
       c++
       const started = Date.now()
       await backoff(new Error('ok'))
@@ -100,6 +105,7 @@ tape('jitter', async function (t) {
 
   try {
     for await (const backoff of retry({ max: MAX, delay: DELAY, jitter: JITTER })) {
+      t.is(backoff.left, MAX - c)
       c++
       const started = Date.now()
       await backoff(new Error('ok'))
@@ -122,6 +128,7 @@ tape('strategy none', async function (t) {
 
   try {
     for await (const backoff of retry({ max: MAX, delay: DELAY, strategy: 'none' })) {
+      t.is(backoff.left, MAX - c)
       c++
       const started = Date.now()
       await backoff(new Error('ok'))
@@ -141,6 +148,7 @@ tape('strategy linear', async function (t) {
 
   try {
     for await (const backoff of retry({ max: MAX, delay: DELAY, strategy: 'linear' })) {
+      t.is(backoff.left, MAX - c)
       c++
       const started = Date.now()
       await backoff(new Error('ok'))
@@ -160,6 +168,7 @@ tape('strategy exponential', async function (t) {
 
   try {
     for await (const backoff of retry({ max: MAX, delay: DELAY, strategy: 'exponential' })) {
+      t.is(backoff.left, MAX - c)
       c++
       const started = Date.now()
       await backoff(new Error('ok'))
@@ -179,6 +188,7 @@ tape('strategy array', async function (t) {
 
   try {
     for await (const backoff of retry({ max: 5, strategy: DELAYS })) {
+      t.is(backoff.left, MAX - c)
       c++
       const started = Date.now()
       await backoff(new Error('ok'))
@@ -202,6 +212,7 @@ tape('strategy custom', async function (t) {
   const strategy = ({ delay, count, jitter }) => delay ** count
   try {
     for await (const backoff of retry({ max: MAX, delay: DELAY, strategy })) {
+      t.is(backoff.left, MAX - c)
       c++
       const started = Date.now()
       await backoff(new Error('ok'))
