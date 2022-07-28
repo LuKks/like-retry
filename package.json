@@ -1,6 +1,6 @@
 {
   "name": "like-retry",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Retry and backoff using generators",
   "main": "index.js",
   "scripts": {
